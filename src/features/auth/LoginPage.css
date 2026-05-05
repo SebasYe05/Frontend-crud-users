@@ -1,0 +1,190 @@
+/* ── Isometric 3D inputs ──────────────────────────────────────── */
+.input, .wrapper button {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  padding: 10px;
+  border: 0.1px solid #2563eb;
+}
+
+.wrapper button {
+  background: #3b82f6;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.wrapper {
+  position: relative;
+  transform: skewY(-14deg);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.wrapper li,
+.wrapper button {
+  position: relative;
+  list-style: none;
+  width: 220px;
+  z-index: var(--i);
+  transition: 0.3s;
+  color: white;
+}
+
+.wrapper li::before,
+.wrapper button::before {
+  position: absolute;
+  content: "";
+  background: #3b82f6;
+  top: 0;
+  left: -40px;
+  width: 40px;
+  height: 40px;
+  transform-origin: right;
+  transform: skewY(45deg);
+  transition: 0.3s;
+}
+
+.wrapper li::after,
+.wrapper button::after {
+  position: absolute;
+  content: "";
+  background: #3b82f6;
+  width: 220px;
+  height: 40px;
+  top: -40px;
+  left: 0;
+  transform-origin: bottom;
+  transform: skewX(45deg);
+  transition: 0.3s;
+}
+
+/* Login - 2 fields */
+.wrapper li:nth-child(1)::after,
+.wrapper li:nth-child(1)::before { background-color: #bfdbfe; }
+.wrapper li:nth-child(2)::after,
+.wrapper li:nth-child(2)::before { background-color: #93c5fd; }
+
+/* Register - 4 fields */
+.wrapper.register li:nth-child(1)::after,
+.wrapper.register li:nth-child(1)::before { background-color: #dbeafe; }
+.wrapper.register li:nth-child(2)::after,
+.wrapper.register li:nth-child(2)::before { background-color: #bfdbfe; }
+.wrapper.register li:nth-child(3)::after,
+.wrapper.register li:nth-child(3)::before { background-color: #93c5fd; }
+.wrapper.register li:nth-child(4)::after,
+.wrapper.register li:nth-child(4)::before { background-color: #60a5fa; }
+
+li .input {
+  outline: none;
+  border: none;
+  color: #1e3a5f;
+  font-size: 0.875rem;
+  font-family: 'DM Sans', sans-serif;
+}
+
+li .input::placeholder { color: #4b7db8; }
+
+/* Login backgrounds */
+.wrapper:not(.register) li:nth-child(1) .input { background: #bfdbfe; }
+.wrapper:not(.register) li:nth-child(2) .input { background: #93c5fd; }
+
+/* Register backgrounds */
+.wrapper.register li:nth-child(1) .input { background: #dbeafe; }
+.wrapper.register li:nth-child(2) .input { background: #bfdbfe; }
+.wrapper.register li:nth-child(3) .input { background: #93c5fd; }
+.wrapper.register li:nth-child(4) .input { background: #60a5fa; }
+
+li .input:focus { outline: none; border: 3.5px solid #3b82f6; }
+
+.wrapper li:hover, .wrapper button:hover { transform: translateX(-20px); }
+
+.wrapper button:hover,
+.wrapper button:hover::before,
+.wrapper button:hover::after { background: #1d4ed8; }
+
+.wrapper button:active { transform: translateX(0px); }
+
+/* ── Auth page layout ─────────────────────────────────────────── */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #bfdbfe 100%);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.auth-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem 3rem;
+  box-shadow: 0 20px 60px rgba(37, 99, 235, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  min-width: 340px;
+}
+
+.auth-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #3b82f6;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 3px 10px;
+  border-radius: 99px;
+  margin-bottom: 4px;
+}
+
+.auth-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e3a5f;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.auth-subtitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0 0 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-wrapper {
+  padding-top: 2.5rem;
+  padding-left: 2.5rem;
+}
+
+.auth-footer {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 0.5rem;
+}
+
+.auth-footer a {
+  color: #3b82f6;
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth-footer a:hover { text-decoration: underline; }
+
+.field-error {
+  font-size: 0.72rem;
+  color: #ef4444;
+  position: absolute;
+  bottom: -18px;
+  left: 0;
+  white-space: nowrap;
+}
+
+li { position: relative; }

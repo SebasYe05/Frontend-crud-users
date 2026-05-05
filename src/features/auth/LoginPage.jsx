@@ -1,10 +1,14 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import { useNavigate, Link } from "react-router-dom";
 import { loginSchema } from "./loginSchema";
 import { useAuth } from "./useAuth";
+import "./LoginPage.css";
 
 export function LoginPage() {
-  const { handleLogin, error, loading } = useAuth();
+  const { handleLogin, loading } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -12,70 +16,65 @@ export function LoginPage() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
-    defaultValues: { username: "", password: "" },
+    defaultValues: { nameUser: "", pass: "" },
   });
 
+  const onSubmit = async (data) => {
+    const toastId = toast.loading("Iniciando sesión...");
+    try {
+      await handleLogin(data);
+      toast.success("¡Bienvenido!", { id: toastId });
+      navigate("/");
+    } catch (err) {
+      toast.error(err?.message || "Credenciales incorrectas", { id: toastId });
+    }
+  };
+
   return (
-    <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
-      <div
-        className="card shadow-sm p-4"
-        style={{ width: "100%", maxWidth: 420 }}
-      >
-        <h4 className="card-title text-center mb-4 fw-semibold">
-          Iniciar sesión
-        </h4>
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-brand">Panel</div>
+        <h4 className="auth-title">Iniciar sesión</h4>
+        <p className="auth-subtitle">Ingresa tus credenciales para continuar</p>
 
-        <form onSubmit={handleSubmit(handleLogin)} noValidate>
-          {/* Username */}
-          <div className="mb-3">
-            <label className="form-label">Nombre de usuario</label>
-            <input
-              type="text"
-              className={`form-control ${errors.username ? "is-invalid" : ""}`}
-              placeholder="nombre de usuario"
-              {...register("username")}
-            />
-            {errors.username && (
-              <div className="invalid-feedback">{errors.username.message}</div>
-            )}
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <div className="form-wrapper">
+            <ul className="wrapper">
+              <li style={{ "--i": 3 }}>
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Usuario"
+                  {...register("nameUser")}
+                  autoComplete="username"
+                />
+                {errors.nameUser && (
+                  <span className="field-error">{errors.nameUser.message}</span>
+                )}
+              </li>
+              <li style={{ "--i": 2 }}>
+                <input
+                  className="input"
+                  type="password"
+                  placeholder="Contraseña"
+                  {...register("pass")}
+                  autoComplete="current-password"
+                />
+                {errors.pass && (
+                  <span className="field-error">{errors.pass.message}</span>
+                )}
+              </li>
+              <button type="submit" style={{ "--i": 1 }} disabled={loading}>
+                {loading ? "Cargando..." : "Ingresar"}
+              </button>
+            </ul>
           </div>
-
-          {/* Contraseña */}
-          <div className="mb-3">
-            <label className="form-label">Contraseña</label>
-            <input
-              type="password"
-              className={`form-control ${errors.password ? "is-invalid" : ""}`}
-              placeholder="••••••••"
-              {...register("password")}
-            />
-            {errors.password && (
-              <div className="invalid-feedback">{errors.password.message}</div>
-            )}
-          </div>
-
-          {/* Error de la API */}
-          {error && (
-            <div className="alert alert-danger py-2 mb-3" role="alert">
-              {error}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            className="btn btn-primary w-100"
-            disabled={loading}
-          >
-            {loading ? (
-              <>
-                <span className="spinner-border spinner-border-sm me-2" />
-                Cargando...
-              </>
-            ) : (
-              "Entrar"
-            )}
-          </button>
         </form>
+
+        <p className="auth-footer mt-5">
+          ¿No tienes cuenta?{" "}
+          <Link to="/register">Regístrate aquí</Link>
+        </p>
       </div>
     </div>
   );

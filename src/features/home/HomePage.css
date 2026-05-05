@@ -1,0 +1,132 @@
+.home-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.home-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.home-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  width: fit-content;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.home-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.home-hero-name {
+  color: var(--primary);
+}
+
+.home-hero-desc {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.home-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.home-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 22px;
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.home-card--blue {
+  background: var(--blue-900);
+  color: #fff;
+  box-shadow: var(--shadow-lg);
+}
+
+.home-card--blue:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+  text-decoration: none;
+  color: #fff;
+}
+
+.home-card--light {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-card-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(255,255,255,0.15);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.home-card-icon--muted {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.home-card-content {
+  flex: 1;
+}
+
+.home-card-content h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.home-card--blue .home-card-content h3 { color: #fff; }
+.home-card--light .home-card-content h3 { color: var(--text-primary); }
+
+.home-card-content p {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  margin: 0;
+}
+
+.home-card-arrow {
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: transform 0.2s;
+}
+
+.home-card--blue:hover .home-card-arrow {
+  transform: translateX(4px);
+  opacity: 1;
+}

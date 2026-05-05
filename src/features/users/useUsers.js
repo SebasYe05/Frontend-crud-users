@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback } from "react";
 import * as usersService from "./usersService";
 
 export function useUsers() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers]   = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError]   = useState(null);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -19,17 +19,22 @@ export function useUsers() {
     }
   }, []);
 
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+  useEffect(() => { fetchUsers(); }, [fetchUsers]);
 
-  const createUser = async (data) => {
-    await usersService.createUser(data);
+  const toPayload = (formData) => ({
+    fullName:        formData.fullName,
+    nameUser:        formData.nameUser,
+    pass:            formData.pass || undefined,
+    confirmPassword: formData.pass || undefined,
+  });
+
+  const createUser = async (formData) => {
+    await usersService.createUser(toPayload(formData));
     await fetchUsers();
   };
 
-  const updateUser = async (id, data) => {
-    await usersService.updateUser(id, data);
+  const updateUser = async (id, formData) => {
+    await usersService.updateUser(id, toPayload(formData));
     await fetchUsers();
   };
 

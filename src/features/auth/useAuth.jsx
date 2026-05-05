@@ -13,9 +13,18 @@ export function useAuth() {
     try {
       setLoading(true);
       setError(null);
-      const { data } = await loginService({ username, password });
-      login(data.token, { username, role: data.role });
-      navigate("/users");
+      
+      // Mapeamos los campos para que coincidan con la DTO del backend
+      const payload = {
+        nameUser: username,
+        pass: password,
+      };
+
+       const { data } = await loginService(payload);
+       const roleMap = { ADMIN: "ROLE_ADMIN", USER: "ROLE_USER" };
+       const mappedRole = roleMap[data.role] || data.role;
+       login(data.token, { username, role: mappedRole });
+       navigate("/users");
     } catch (err) {
       setError(err.response?.data?.message || "Credenciales inválidas");
     } finally {
