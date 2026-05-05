@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback } from "react";
 import * as usersService from "./usersService";
 
 export function useUsers() {
-  const [users, setUsers]   = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError]   = useState(null);
+  const [error, setError] = useState(null);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -19,22 +19,29 @@ export function useUsers() {
     }
   }, []);
 
-  useEffect(() => { fetchUsers(); }, [fetchUsers]);
-
-  const toPayload = (formData) => ({
-    fullName:        formData.fullName,
-    nameUser:        formData.nameUser,
-    pass:            formData.pass || undefined,
-    confirmPassword: formData.pass || undefined,
-  });
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   const createUser = async (formData) => {
-    await usersService.createUser(toPayload(formData));
+    await usersService.createUser({
+      nameUser: formData.nameUser,
+      fullName: formData.fullName,
+      pass: formData.pass,
+      confirmPassword: formData.confirmPassword,
+    });
     await fetchUsers();
   };
 
   const updateUser = async (id, formData) => {
-    await usersService.updateUser(id, toPayload(formData));
+    const payload = {
+      nameUser: formData.nameUser,
+      fullName: formData.fullName,
+      bio: formData.bio || "",
+      pass: formData.pass || "",
+      confirmPassword: formData.confirmPassword || formData.pass || "",
+    };
+    await usersService.updateUser(id, payload);
     await fetchUsers();
   };
 

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, userEditSchema } from "./userSchema";
 import { FiX } from "react-icons/fi";
+import "./UserForm.css";
 
 export function UserForm({ user, onSubmit, onClose }) {
   const isEditing = !!user;
@@ -14,21 +15,40 @@ export function UserForm({ user, onSubmit, onClose }) {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(isEditing ? userEditSchema : userSchema),
-    defaultValues: { nombre: "", apellido: "", email: "", password: "", role: "USER" },
+    defaultValues: {
+      nameUser: "",
+      fullName: "",
+      bio: "",
+      pass: "",
+      confirmPassword: "",
+    },
   });
 
   useEffect(() => {
-    if (user) reset({ ...user, password: "" });
+    if (user) reset({ ...user, pass: "", confirmPassword: "" });
   }, [user, reset]);
 
   const handleFormSubmit = async (data) => {
-    if (isEditing && !data.password) delete data.password;
     await onSubmit(data);
     onClose();
   };
 
+  // Cerrar con Escape
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [onClose]);
+
   return (
-    <div className="modal-overlay">
+    <div
+      className="modal-overlay"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div className="modal-box">
         <div className="modal-header">
           <h3>{isEditing ? "Editar usuario" : "Nuevo usuario"}</h3>
@@ -39,59 +59,80 @@ export function UserForm({ user, onSubmit, onClose }) {
 
         <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
           <div className="modal-body">
-            <div className="form-row">
-              <div className="form-field">
-                <label className="form-label">Nombre</label>
-                <input
-                  className={`form-input ${errors.nombre ? "error" : ""}`}
-                  {...register("nombre")}
-                />
-                {errors.nombre && <span className="form-error">{errors.nombre.message}</span>}
-              </div>
-              <div className="form-field">
-                <label className="form-label">Apellido</label>
-                <input
-                  className={`form-input ${errors.apellido ? "error" : ""}`}
-                  {...register("apellido")}
-                />
-                {errors.apellido && <span className="form-error">{errors.apellido.message}</span>}
-              </div>
-            </div>
-
+            {/* nameUser */}
             <div className="form-field">
-              <label className="form-label">Correo electrónico</label>
+              <label className="form-label">Usuario</label>
               <input
-                type="email"
-                className={`form-input ${errors.email ? "error" : ""}`}
-                {...register("email")}
+                className={`form-input ${errors.nameUser ? "error" : ""}`}
+                placeholder="nombre_usuario"
+                {...register("nameUser")}
               />
-              {errors.email && <span className="form-error">{errors.email.message}</span>}
+              {errors.nameUser && (
+                <span className="form-error">{errors.nameUser.message}</span>
+              )}
             </div>
 
+            {/* fullName */}
+            <div className="form-field">
+              <label className="form-label">Nombre completo</label>
+              <input
+                className={`form-input ${errors.fullName ? "error" : ""}`}
+                placeholder="Nombres y apellidos"
+                {...register("fullName")}
+              />
+              {errors.fullName && (
+                <span className="form-error">{errors.fullName.message}</span>
+              )}
+            </div>
+
+            {/* bio — solo al editar */}
+            {isEditing && (
+              <div className="form-field">
+                <label className="form-label">Biografía</label>
+                <input
+                  className={`form-input ${errors.bio ? "error" : ""}`}
+                  placeholder="Breve descripción del usuario"
+                  {...register("bio")}
+                />
+                {errors.bio && (
+                  <span className="form-error">{errors.bio.message}</span>
+                )}
+              </div>
+            )}
+
+            {/* pass */}
             <div className="form-field">
               <label className="form-label">
                 Contraseña
-                {isEditing && <span className="form-hint">(vacío = sin cambios)</span>}
+                {isEditing && (
+                  <span className="form-hint">(vacío = sin cambios)</span>
+                )}
               </label>
               <input
                 type="password"
                 placeholder="••••••••"
-                className={`form-input ${errors.password ? "error" : ""}`}
-                {...register("password")}
+                className={`form-input ${errors.pass ? "error" : ""}`}
+                {...register("pass")}
               />
-              {errors.password && <span className="form-error">{errors.password.message}</span>}
+              {errors.pass && (
+                <span className="form-error">{errors.pass.message}</span>
+              )}
             </div>
 
+            {/* confirmPassword */}
             <div className="form-field">
-              <label className="form-label">Rol</label>
-              <select
-                className={`form-select ${errors.role ? "error" : ""}`}
-                {...register("role")}
-              >
-                <option value="USER">Usuario</option>
-                <option value="ROLE_ADMIN">Administrador</option>
-              </select>
-              {errors.role && <span className="form-error">{errors.role.message}</span>}
+              <label className="form-label">Confirmar contraseña</label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                className={`form-input ${errors.confirmPassword ? "error" : ""}`}
+                {...register("confirmPassword")}
+              />
+              {errors.confirmPassword && (
+                <span className="form-error">
+                  {errors.confirmPassword.message}
+                </span>
+              )}
             </div>
           </div>
 
@@ -99,10 +140,21 @@ export function UserForm({ user, onSubmit, onClose }) {
             <button type="button" className="btn-ghost" onClick={onClose}>
               Cancelar
             </button>
-            <button type="submit" className="btn-primary" disabled={isSubmitting}>
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
-                <><span className="spinner" />Guardando...</>
-              ) : isEditing ? "Guardar cambios" : "Crear usuario"}
+                <>
+                  <span className="spinner" />
+                  Guardando...
+                </>
+              ) : isEditing ? (
+                "Guardar cambios"
+              ) : (
+                "Crear usuario"
+              )}
             </button>
           </div>
         </form>

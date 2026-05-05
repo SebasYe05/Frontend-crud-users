@@ -1,132 +1,422 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap");
+
+/* ── Page shell ───────────────────────────────────────────────── */
 .home-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 1rem 0 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  padding: 0 0 4rem;
 }
 
+/* ── Hero ─────────────────────────────────────────────────────── */
 .home-hero {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  padding: 3.5rem 3rem 3rem;
+  background: linear-gradient(
+    135deg,
+    var(--blue-900) 0%,
+    var(--blue-800) 50%,
+    var(--blue-700) 100%
+  );
+  border-bottom: 1px solid var(--border);
 }
 
-.home-hero-badge {
+.home-hero-waveform {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  padding: 0 0 0 55%;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.waveform-bar {
+  flex-shrink: 0;
+  width: 4px;
+  height: var(--h, 40%);
+  background: #fff;
+  border-radius: 2px;
+  animation: wave 1.6s ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes wave {
+  from {
+    transform: scaleY(0.4);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.home-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 520px;
+}
+
+.home-greeting {
+  font-size: 0.85rem;
+  color: var(--blue-200);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 0 0 4px;
+}
+
+.home-name {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.home-name-accent {
+  color: var(--blue-300);
+}
+
+.home-tagline {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 1.75rem;
+}
+
+.home-play-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  background: var(--primary-light);
-  color: var(--primary);
+  gap: 8px;
+  background: #fff;
+  color: var(--blue-700);
+  padding: 11px 22px;
   border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  width: fit-content;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  font-family: var(--font-body);
+  transition:
+    background 0.18s,
+    transform 0.15s,
+    box-shadow 0.15s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+.home-play-btn:hover {
+  background: var(--blue-50);
+  transform: translateY(-1px);
+  text-decoration: none;
+  color: var(--blue-700);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+.home-play-btn:active {
+  transform: translateY(0);
 }
 
-.home-hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 2.75rem);
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+/* ── Sections ─────────────────────────────────────────────────── */
+.home-section {
+  padding: 2.25rem 3rem 0;
 }
 
-.home-hero-name {
-  color: var(--primary);
-}
-
-.home-hero-desc {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-.home-cards {
+.home-section-header {
   display: flex;
-  flex-direction: column;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+}
+
+.home-section-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 1.1rem;
+  display: flex;
+  align-items: center;
+}
+
+.home-section-header .home-section-title {
+  margin-bottom: 0;
+}
+
+.home-see-all {
+  font-size: 0.78rem;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.home-see-all:hover {
+  text-decoration: underline;
+}
+
+/* ── Quick links ──────────────────────────────────────────────── */
+.quick-links-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 }
 
-.home-card {
+.quick-link-card {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 20px 22px;
-  border-radius: var(--radius-lg);
-  text-decoration: none;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
-
-.home-card--blue {
-  background: var(--blue-900);
-  color: #fff;
-  box-shadow: var(--shadow-lg);
-}
-
-.home-card--blue:hover {
-  background: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-xl);
-  text-decoration: none;
-  color: #fff;
-}
-
-.home-card--light {
+  gap: 12px;
+  padding: 14px 16px;
   background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  text-decoration: none;
   color: var(--text-primary);
-  border-color: var(--border);
+  transition:
+    background 0.18s,
+    border-color 0.18s,
+    transform 0.15s,
+    box-shadow 0.15s;
   box-shadow: var(--shadow-sm);
 }
+.quick-link-card:hover {
+  background: var(--bg-subtle);
+  border-color: var(--blue-300);
+  transform: translateY(-2px);
+  text-decoration: none;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+}
 
-.home-card-icon {
-  width: 48px;
-  height: 48px;
-  background: rgba(255,255,255,0.15);
-  border-radius: var(--radius-md);
+.quick-link-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--primary-light);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--primary);
   flex-shrink: 0;
 }
 
-.home-card-icon--muted {
+.quick-link-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.quick-link-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* ── Albums grid ──────────────────────────────────────────────── */
+.albums-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.album-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition:
+    transform 0.18s,
+    border-color 0.18s,
+    box-shadow 0.18s;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+.album-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--blue-300);
+  box-shadow: var(--shadow-md);
+}
+.album-card:hover .album-play-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.album-art {
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.album-play-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity 0.18s,
+    transform 0.18s;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.album-info {
+  padding: 12px 14px 14px;
+}
+
+.album-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.album-artist {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin: 2px 0 6px;
+}
+
+.album-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.album-genre {
   background: var(--primary-light);
   color: var(--primary);
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-weight: 600;
+  font-size: 0.7rem;
 }
 
-.home-card-content {
-  flex: 1;
+/* ── Recent tracks ────────────────────────────────────────────── */
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.home-card-content h3 {
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: 2px;
+.recent-track {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  transition: background 0.15s;
+  cursor: pointer;
 }
-
-.home-card--blue .home-card-content h3 { color: #fff; }
-.home-card--light .home-card-content h3 { color: var(--text-primary); }
-
-.home-card-content p {
-  font-size: 0.85rem;
-  opacity: 0.75;
-  margin: 0;
+.recent-track:hover {
+  background: var(--bg-subtle);
 }
-
-.home-card-arrow {
-  flex-shrink: 0;
-  opacity: 0.7;
-  transition: transform 0.2s;
-}
-
-.home-card--blue:hover .home-card-arrow {
-  transform: translateX(4px);
+.recent-track:hover .recent-track-play {
   opacity: 1;
+}
+.recent-track:hover .recent-track-num {
+  opacity: 0;
+}
+
+.recent-track-num {
+  width: 20px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+
+.recent-track-art {
+  width: 36px;
+  height: 36px;
+  background: var(--primary-light);
+  border: 1px solid var(--blue-200);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.recent-track-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.recent-track-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recent-track-artist {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+.recent-track-duration {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.recent-track-play {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .quick-links-grid,
+  .albums-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  .home-hero,
+  .home-section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .quick-links-grid,
+  .albums-grid {
+    grid-template-columns: 1fr;
+  }
+  .home-name {
+    font-size: 2rem;
+  }
+  .home-hero {
+    padding-top: 2rem;
+  }
 }

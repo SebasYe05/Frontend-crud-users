@@ -1,36 +1,42 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/authContext";
-import { login as loginService } from "./authService";
+import { login as loginService, register as registerService } from "./authService";
 
 export function useAuth() {
   const { login } = useAuthContext();
-  const navigate = useNavigate();
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async ({ username, password }) => {
+  // Sends { nameUser, pass } → receives LoginResponseDTO
+  const handleLogin = async ({ nameUser, pass }) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      setError(null);
-      
-      // Mapeamos los campos para que coincidan con la DTO del backend
-      const payload = {
-        nameUser: username,
-        pass: password,
-      };
-
-       const { data } = await loginService(payload);
-       const roleMap = { ADMIN: "ROLE_ADMIN", USER: "ROLE_USER" };
-       const mappedRole = roleMap[data.role] || data.role;
-       login(data.token, { username, role: mappedRole });
-       navigate("/users");
-    } catch (err) {
-      setError(err.response?.data?.message || "Credenciales inválidas");
+      const { data } = await loginService({ nameUser, pass });
+      // Store user with fields from LoginResponseDTO
+      login(data.token, {
+        username:      data.userName,
+        fullName:      data.nombreCompleto,
+        bio:           data.bio,
+        role:          data.role,  // "ROLE_ADMIN" | "ROLE_USER"
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  return { handleLogin, error, loading };
+  // Sends { nameUser, fullName, pass, confirmPassword }
+  const handleRegister = async (formData) => {
+    setLoading(true);
+    try {
+      await registerService({
+        nameUser:        formData.nameUser,
+        fullName:        formData.fullName,
+        pass:            formData.pass,
+        confirmPassword: formData.confirmPassword,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { handleLogin, handleRegister, loading };
 }
